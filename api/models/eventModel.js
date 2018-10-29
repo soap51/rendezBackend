@@ -15,7 +15,7 @@ const eventSchema = mongoose.Schema({
         required : true
     },
     startTime: {
-        type : TimeRanges,
+        type : Date,
         required : true
     },
     endTime : {
@@ -34,9 +34,17 @@ const eventSchema = mongoose.Schema({
     comment : {
         type : [commentModel],
         ref : 'Comment',
+    },
+    currentSeat: {
+        type : Number,
+        required : true
+    },
+    totalSeat : {
+        type : Number,
+        required : true
     }
 } , {
     timestamps: true
 })
 
-module.exports = mongoose.model('User' , userSchema)
+module.exports = mongoose.model('User' , eventSchema)

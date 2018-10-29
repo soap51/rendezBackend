@@ -1,7 +1,7 @@
-import eventController from './eventController'
-import userController from './userController'
+const eventController= require('./eventController')
+const userController =require('./userController')
 
-export default {
+module.exports = {
     eventController,
     userController
 }

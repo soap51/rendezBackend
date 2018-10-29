@@ -18,19 +18,19 @@ const userSchema = mongoose.Schema({
         match : /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     events : {
-        type : mongoose.Schema.Types.ObjectId, 
+        type : [mongoose.Schema.Types.ObjectId], 
         ref : 'Event',
         required :true
     },
     confirmationToken : {
-        type : String , 
+        type : Boolean , 
         required : true ,
         default : false,
     },
     password : {type : String , required : true},
     notifications : {
         type : [String],
-        required : true
+       
     }
 })
 
