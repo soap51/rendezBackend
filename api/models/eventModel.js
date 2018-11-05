@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const commentModel = require('./commentModel')
+const seatModel = require('./seatModel')
 const eventSchema = mongoose.Schema({
     _id : mongoose.Schema.Types.ObjectId,
     eventName : {
@@ -29,22 +30,22 @@ const eventSchema = mongoose.Schema({
         required :true
     },
     detail : {
-        type : String,
+        type : String
     },
     comment : {
-        type : [commentModel],
-        ref : 'Comment',
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Comment'
     },
     currentSeat: {
         type : Number,
         required : true
     },
     totalSeat : {
-        type : Number,
-        required : true
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Seat'
     }
 } , {
     timestamps: true
 })
 
-module.exports = mongoose.model('User' , eventSchema)
+module.exports = mongoose.model('Event' , eventSchema)

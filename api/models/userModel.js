@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const commentModel = require('./commentModel')
+const eventModel = require('./eventModel')
 const userSchema = mongoose.Schema({
     _id : mongoose.Schema.Types.ObjectId,
     studentCode : {
@@ -27,11 +29,29 @@ const userSchema = mongoose.Schema({
         required : true ,
         default : false,
     },
-    password : {type : String , required : true},
+    password : {
+        type : String , 
+        required : true
+    },
     notifications : {
         type : [String],
        
+    },
+    sex : {
+        type : String,
+        required : true
+    },
+
+    historyComment : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Comment'
+    },
+    historyEvent : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Event'
     }
+},{
+    timestamp : true
 })
 
 module.exports = mongoose.model('User' , userSchema)

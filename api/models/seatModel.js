@@ -1,17 +1,15 @@
 const mongoose = require('mongoose')
-const commentSchema = mongoose.Schema({
+const seatSchema = mongoose.Schema({
     _id : mongoose.Schema.Types.ObjectId,
     eventID : {
         type : mongoose.Schema.Types.ObjectId, 
         ref : 'event',
         required :true
     },
-    detail : {
-        type : String
-        
+    max : {
+        type : Number,
+        require : true
     }
-},{
-    timestamp : true
 })
 
-module.exports = mongoose.model('Comment' , commentSchema)
+module.exports = mongoose.model('Seat' , seatSchema)
