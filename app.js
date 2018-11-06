@@ -4,7 +4,10 @@ const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const apiRoute = require('./api/routes')
 const mongoose = require('mongoose')
+
+//Connect DB
 mongoose.connect("mongodb://pakorn:1234@test-shard-00-00-azash.gcp.mongodb.net:27017,test-shard-00-01-azash.gcp.mongodb.net:27017,test-shard-00-02-azash.gcp.mongodb.net:27017/test?ssl=true&replicaSet=Test-shard-0&authSource=admin&retryWrites=true" , {useNewUrlParser : true})
+
 
 app.use(bodyParser.urlencoded({extended : false}))
 app.use(bodyParser.json())
