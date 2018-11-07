@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 const Event = require("../models/eventModel")
-const Comment = require("../model/commentModel")
+const Comment = require("../models/commentModel")
 
 exports.getAllEventFeed = (req,res,next)=>{
     Event.find()
