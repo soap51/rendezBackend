@@ -112,7 +112,7 @@ exports.forgot =(req,res,next)=>{
         })
 }
 exports.verify =(req,res,next)=>{
-    
+
 }
 exports.resend =(req,res,next)=>{
     
