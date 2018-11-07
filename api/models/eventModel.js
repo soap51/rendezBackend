@@ -41,8 +41,10 @@ const eventSchema = mongoose.Schema({
         required : true
     },
     totalSeat : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : 'Seat'
+        type : Number ,
+        required : true
+        // type : [mongoose.Schema.Types.ObjectId],
+        // ref : 'Seat'
     }
 } , {
     timestamps: true

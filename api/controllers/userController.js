@@ -5,7 +5,7 @@ const salt = bcrypt.hashSync("myRendez")
 const UserModel = require('../models/userModel')
 const nodemailer =require("nodemailer")
 exports.register = (req,res,next)=>{
-    
+    console.log(req.body)
     UserModel
         .find({email : req.body.email})
         .exec()
@@ -29,6 +29,7 @@ exports.register = (req,res,next)=>{
                             email : req.body.email,
                             password : hash, 
                             events : [],
+                            sex : req.body.sex,
                             confirmationToken : false,
                             notifications : []
                         })
@@ -37,7 +38,8 @@ exports.register = (req,res,next)=>{
                             .save()
                             .then(result =>{
                                 res.status(201).json({
-                                    message : "Create user successfully"
+                                    message : "Create user successfully",
+                                    result  
                                 })
                             }).catch(err=>{
                                 console.log(err)
