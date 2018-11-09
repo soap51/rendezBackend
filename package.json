@@ -13,7 +13,8 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "dotenv": "^6.1.0",
-    "expo": "^31.0.4",
+  
+    "expo-server-sdk": "^3.0.1",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.3.0",
     "mongoose": "^5.3.8",
