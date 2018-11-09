@@ -45,6 +45,10 @@ const eventSchema = mongoose.Schema({
         required : true
         // type : [mongoose.Schema.Types.ObjectId],
         // ref : 'Seat'
+    },
+    icontype : {
+        type : Number ,
+        required : true
     }
 } , {
     timestamps: true

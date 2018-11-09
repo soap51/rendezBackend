@@ -59,6 +59,7 @@ exports.register = (req,res,next)=>{
         })
     }
 exports.login =(req,res,next)=>{
+    console.log("o;op")
     UserModel
         .find({email : req.body.email})
         .exec()
