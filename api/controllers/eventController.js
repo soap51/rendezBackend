@@ -84,7 +84,10 @@ exports.createEvent =(req,res,next)=>{
 exports.joinEvent =(req,res,next)=>{
 
 }
-exports.getEventDetail =(req,res,next)=>{}
+exports.getEventDetail =(req,res,next)=>{
+    
+}
+
 exports.deleteEvent = (req,res,next)=>{
     UserModel
         .find({_id : req.params.id_author})

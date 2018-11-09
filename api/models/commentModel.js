@@ -3,7 +3,7 @@ const commentSchema = mongoose.Schema({
     _id : mongoose.Schema.Types.ObjectId,
     eventID : {
         type : mongoose.Schema.Types.ObjectId, 
-        ref : 'event',
+        ref : 'Event',
         required :true
     },
     detail : {
