@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken')
 const salt = bcrypt.hashSync("myRendez")
 const UserModel = require('../models/userModel')
 const nodemailer =require("nodemailer")
+
+
 exports.register = (req,res,next)=>{
     console.log(req.body)
     UserModel

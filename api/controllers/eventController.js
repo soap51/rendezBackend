@@ -144,6 +144,12 @@ exports.getEventDetail =(req,res,next)=>{
             })
         })
 }
+<<<<<<< HEAD
+exports.getEventDetail =(req,res,next)=>{
+    
+}
+=======
+>>>>>>> origin/eiei
 
 exports.deleteEvent = (req,res,next)=>{
     UserModel
