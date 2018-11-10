@@ -22,6 +22,7 @@ exports.register = (req,res,next)=>{
                             message : "Something went wrong"
                         })
                     }else{
+                        let pass = Math.floor(1000 + Math.random() * 9999);
                         const User = new UserModel({
                             _id : new mongoose.Types.ObjectId(),
                             studentCode : req.body.studentCode,
@@ -31,12 +32,44 @@ exports.register = (req,res,next)=>{
                             events : [],
                             sex : req.body.sex,
                             confirmationToken : false,
-                            notifications : []
+                            notifications : [],
+                            otp : pass
                         })
-                        
                         User
                             .save()
                             .then(result =>{
+
+                                // create reusable transporter object using the default SMTP transport
+                                let transporter = nodemailer.createTransport({
+                                    host: 'smtp.gmail.com',
+                                    port: 587,
+                                    secure: false,
+                                    requireTLS: true,
+                                    auth: {
+                                        user: 'rendezvarify@gmail.com',
+                                        pass: 'sese59050'
+                                },   
+                                });
+                                // setup email data with unicode symbols
+                                let mailOptions = {
+                                    from: '"Rendez Contect" <rendezvarify@gmail.com>', // sender address
+                                    to: req.body.email, // list of receivers
+                                    subject: 'Verify Your Email For Rendez', // Subject line
+                                    // text: ""+result.otp, // plain text body
+                                    html: '<p>'+result.otp+'</p>'// html body
+                                };
+                                // send mail with defined transport object
+                                transporter.sendMail(mailOptions, (error, info) => {
+                                    if (error) {
+                                        return console.log(error);
+                                    }
+                                    console.log('Message sent: %s', info.messageId);
+                                    // Preview only available when sending through an Ethereal account
+                                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                                    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+                                    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+                                });
+
                                 res.status(201).json({
                                     message : "Create user successfully",
                                     result  
@@ -59,7 +92,6 @@ exports.register = (req,res,next)=>{
         })
     }
 exports.login =(req,res,next)=>{
-    console.log("o;op")
     UserModel
         .find({email : req.body.email})
         .exec()
@@ -81,8 +113,9 @@ exports.login =(req,res,next)=>{
                    } , "Secret_Key" , { expiresIn : "1h"})
                    return res.status(200).json({
                        message : "Auth successfully",
-                       token : token
-                   })
+                       token : token,
+                        _id : user[0]._id
+                    })   
                }
                res.status(401).json({
                    message : "Auth Failed"
@@ -113,41 +146,75 @@ exports.forgot =(req,res,next)=>{
         })
 }
 exports.verify =(req,res,next)=>{
-
-    
+    // UserModel
+    // .find({_id : req.body._id})
+    // .exec()
+    // .then(user=>{
+    //     if(user.length < 1){
+    //         return res.status(404).json({
+    //             message : "User doesn't found"
+    //         })
+    //     }
+    //     else{
+    //         UserModel
+    //             .find({ : req.body._id})
+    //             .exec()
+    //     }
+    // })
 }
 
 exports.resend =(req,res,next)=>{
-    
-     // create reusable transporter object using the default SMTP transport
-     let transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false,
-        requireTLS: true,
-        auth: {
-            user: 'rendezvarify@gmail.com',
-            pass: 'sese59050'
-    },   
-    });
-    // setup email data with unicode symbols
-    let mailOptions = {
-        from: '"Rendez Contect" <rendezvarify@gmail.com>', // sender address
-        to: req.body.email, // list of receivers
-        subject: 'Verify Your Email For Rendez', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Link For Verify</b>' // html body
-    };
-
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
+    UserModel
+    .find({email : req.body.email})
+    .exec()
+    .then(user=>{
+        if(user.length < 1){
+            return res.status(404).json({
+                message : "Email Not Found"
+            })
         }
-        console.log('Message sent: %s', info.messageId);
-        // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-    });
+        else{
+                        // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                    host: 'smtp.gmail.com',
+                    port: 587,
+                    secure: false,
+                    requireTLS: true,
+                    auth: {
+                        user: 'rendezvarify@gmail.com',
+                        pass: 'sese59050'
+                },   
+                });
+                // setup email data with unicode symbols
+                let mailOptions = {
+                    from: '"Rendez Contect" <rendezvarify@gmail.com>', // sender address
+                    to: req.body.email, // list of receivers
+                    subject: 'Verify Your Email For Rendez', // Subject line
+                    // text: 'Hello world?', // plain text body
+                    html: '<p>'+result.otp+'</p>' // html body
+                };
+
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: %s', info.messageId);
+                    // Preview only available when sending through an Ethereal account
+                    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+                    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+                    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+                });
+                res.status(200).json({
+                    message : "OTP has been sent"
+                })
+            }
+                })
+                .catch(err=>{
+                    res.status(500).json({
+                        message : "Something went wrong"
+                    })
+                })
 }
+
+exports.noti = ( req , res , next )=>{}

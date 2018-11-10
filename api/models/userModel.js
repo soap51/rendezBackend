@@ -49,6 +49,10 @@ const userSchema = mongoose.Schema({
     historyEvent : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Event'
+    },
+    otp : {
+        type : Number ,
+        required : true
     }
 },{
     timestamp : true
