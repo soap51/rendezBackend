@@ -22,7 +22,7 @@ exports.register = (req,res,next)=>{
                             message : "Something went wrong"
                         })
                     }else{
-                        let pass = Math.floor(1000 + Math.random() * 9999);
+                        let pass = Math.floor(1000 + Math.random() * 9000);
                         const User = new UserModel({
                             _id : new mongoose.Types.ObjectId(),
                             studentCode : req.body.studentCode,
@@ -146,29 +146,60 @@ exports.forgot =(req,res,next)=>{
         })
 }
 exports.verify =(req,res,next)=>{
-    // UserModel
-    // .find({_id : req.body._id})
-    // .exec()
-    // .then(user=>{
-    //     if(user.length < 1){
-    //         return res.status(404).json({
-    //             message : "User doesn't found"
-    //         })
-    //     }
-    //     else{
-    //         UserModel
-    //             .find({ : req.body._id})
-    //             .exec()
-    //     }
-    // })
-}
+    UserModel
+    .find({_id : req.body._id})
+    .exec()
+    .then(user=>{
+        if(user.length < 1){
+            return res.status(404).json({
+                message : "User doesn't found"
+            })
+        }
+            // else{
+            //     UserModel
+            //     .findAndUpdate({otp : req.body.otp , _id : req.body._id})
+            //     .exec()
+            //     .then(user=>{
+            //         if(user.length < 0){
+            //             return res.status(404).json({
+            //                 meesage : "OTP Not Found!!"
+            //             })
+            //          }
+                        else{
+                          UserModel.findByIdAndUpdate(req.body._id,{$set:{confirmationToken:true}})
+                          .exec()
+                          .then(result=>{
+                            res.status(201).json({
+                                message : "Verify Success",
+                                result : result
+                            })
+                          })
+                          .catch(err=>{
+                              console.log(err)
+                          })
+                        }
+                })
+                .catch(err=>{
+                    res.status(500).json({
+                        error : err
+                    })
+                })
+               
+             }
+    //  })
+//     .catch(err=>{
+//         res.status(500).json({
+//             error : err
+//         })
+//     })
+// }
 
 exports.resend =(req,res,next)=>{
     UserModel
     .find({email : req.body.email})
     .exec()
     .then(user=>{
-        if(user.length < 1){
+        if(user.length < 0){
             return res.status(404).json({
                 message : "Email Not Found"
             })
