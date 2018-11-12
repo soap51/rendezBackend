@@ -34,7 +34,7 @@ const userSchema = mongoose.Schema({
         required : true
     },
     notifications : {
-        type : [String],
+        type : [mongoose.Schema.Types.Mixed],
        
     },
     sex : {
