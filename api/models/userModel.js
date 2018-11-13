@@ -53,6 +53,14 @@ const userSchema = mongoose.Schema({
     otp : {
         type : Number ,
         required : true
+    },
+    currentEvent : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Event'
+    },
+    currentAct : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Event'
     }
 },{
     timestamp : true

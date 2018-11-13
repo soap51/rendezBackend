@@ -46,7 +46,7 @@ const eventSchema = mongoose.Schema({
         // type : [mongoose.Schema.Types.ObjectId],
         // ref : 'Seat'
     },
-    icontype : {
+    iconType : {
         type : Number ,
         required : true
     }

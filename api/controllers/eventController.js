@@ -13,6 +13,7 @@ exports.getAllEventFeed = (req,res,next)=>{
             event : docs.map(doc =>{
                 return{
                     _id : doc._id,
+                    comment : doc.comment,
                     eventName : doc.eventName,
                     place : doc.place,
                     eventDate : doc.eventDate,
@@ -35,7 +36,7 @@ exports.getAllEventFeed = (req,res,next)=>{
 exports.createEvent =(req,res,next)=>{
    
     UserModel
-        .find({_id : req.body.userID})
+        .find({author : req.body.userID})
         .exec()
         .then(user=>{
             if(user.length == 0){
@@ -46,7 +47,7 @@ exports.createEvent =(req,res,next)=>{
             else { 
                 const Event = new EventModel({
                     _id : new mongoose.Types.ObjectId(),
-                    userID : req.body.userID,
+                    // userID : req.body.userID,
                     eventName : req.body.eventName,
                     author : req.body.author ,
                     eventDate : /*req.body.eventDate*/ new Date(),
@@ -55,7 +56,8 @@ exports.createEvent =(req,res,next)=>{
                     place : req.body.place,
                     currentSeat : req.body.currentSeat,
                     totalSeat : req.body.totalSeat,
-                    detail : req.body.detail
+                    detail : req.body.detail,
+                    iconType : req.body.iconType
                 })
                 Event
                     .save()
@@ -112,6 +114,11 @@ exports.joinEvent =(req,res,next)=>{
                     })
                 })
         }
+    })
+    .catch(err=>{
+        res.status(401).json({
+            error : err
+        })
     })
     
 }

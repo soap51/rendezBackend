@@ -134,7 +134,7 @@ exports.forgot =(req,res,next)=>{
         .then(user=>{
             if(user.length < 1){
                 return res.status(401).json({
-                    message : "User doesn't found"        
+                    message : "User doesn't found"
                 })
            }
            

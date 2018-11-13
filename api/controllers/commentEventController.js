@@ -38,7 +38,7 @@ exports.addcomment =(req,res,next)=>{
         _id : new mongoose.Types.ObjectId(),
         eventID : req.body.eventID,
         detail : req.body.detail,
-        timestamp : req.body.timestamp
+        // timestamp : req.body.timestamp
     })
     comment
         .save()
