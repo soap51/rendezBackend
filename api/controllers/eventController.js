@@ -14,6 +14,7 @@ exports.getAllEventFeed = (req,res,next)=>{
                 return{
                     _id : doc._id,
                     comment : doc.comment,
+                    detail : doc.detail,
                     eventName : doc.eventName,
                     place : doc.place,
                     eventDate : doc.eventDate,
