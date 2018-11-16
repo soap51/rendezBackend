@@ -3,9 +3,9 @@ const EventModel = require("../models/eventModel")
 const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
-    EventModel.find()
+    EventModel.find({eventID : req.body._id})
     .select('_id eventName place eventDate startTime endTime author detail comment currentSeat totalSeat timestamp')
-    .populate()
+    .populate('author')
     .exec()
     .then(docs =>{
         res.status(200).json({
@@ -13,7 +13,7 @@ exports.getAllEventFeed = (req,res,next)=>{
             event : docs.map(doc =>{
                 return{
                     _id : doc._id,
-                    comment : doc.comment,
+                    comment : doc.text,
                     detail : doc.detail,
                     eventName : doc.eventName,
                     place : doc.place,
@@ -37,7 +37,7 @@ exports.getAllEventFeed = (req,res,next)=>{
 exports.createEvent =(req,res,next)=>{
    
     UserModel
-        .find({author : req.body.userID})
+        .find({_id : req.body.author})
         .exec()
         .then(user=>{
             if(user.length == 0){
@@ -48,11 +48,11 @@ exports.createEvent =(req,res,next)=>{
             else { 
                 const Event = new EventModel({
                     _id : new mongoose.Types.ObjectId(),
-                    // userID : req.body.userID,
+                     userID : user[0]._id,
                     eventName : req.body.eventName,
                     author : req.body.author ,
                     eventDate : req.body.eventDate ,
-                    startTime : req.body.startTime ,
+                    startTime : req.body.startTime,
                     endTime  : req.body.endTime ,
                     place : req.body.place,
                     currentSeat : req.body.currentSeat,

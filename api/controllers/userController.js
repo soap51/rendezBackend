@@ -28,6 +28,7 @@ exports.register = (req,res,next)=>{
                             studentCode : req.body.studentCode,
                             fullName : req.body.fullName,
                             email : req.body.email,
+                            age : req.body.age,
                             password : hash, 
                             events : [],
                             sex : req.body.sex,
@@ -183,7 +184,7 @@ exports.forgot =(req,res,next)=>{
 }
 exports.verify =(req,res,next)=>{
     UserModel
-    .find({otp : req.body.otp})
+    .find({otp : req.body.otp , _id : req.body._id})
     .exec()
     .then(user=>{
         if(user.length < 1){

@@ -6,7 +6,7 @@ const commentSchema = mongoose.Schema({
         ref : 'Event',
         required :true
     },
-    detail : {
+    text : {
         type : String,
     }
 },{

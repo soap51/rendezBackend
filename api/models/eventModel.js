@@ -35,7 +35,10 @@ const eventSchema = mongoose.Schema({
     comment : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Comment'
-    },
+    //     ment:
+    //         { type: mongoose.Schema.ObjectId , ref : 'Comment'}
+        
+     },
     currentSeat: {
         type : Number,
         required : true

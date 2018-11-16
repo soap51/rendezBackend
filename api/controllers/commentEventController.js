@@ -40,30 +40,48 @@ exports.addcomment =(req,res,next)=>{
         detail : req.body.detail,
         // timestamp : req.body.timestamp
     })
-    comment
-        .save()
-        .then(result =>{
-            console.log(result)
-            res.status(201).json({
-                message : 'Add comment success',
-                addComment: {
-                    _id : result._id,
-                    eventID : result.eventID,
-                    detail : result.detail,
-                    timestamp : result.timestamp,
-                    request: {
-                        type : 'GET',
-                        url : ''
-                    }
-                }
+    console.log(comment)
+    Event.findByIdAndUpdate( req.body.eventID )
+        .exec()
+        .then(event=>{
+            console.log(event)
+            res.status(200).json({
+                message : "Add Comment Successfully",
+                event : event
             })
+            
+                
+            
         })
-        .catch(err =>{
-            console.log(err)
+        .catch(err=>{
             res.status(500).json({
-                error : err
+                message : "Internal Server Error"
             })
         })
+    // comment
+    //     .save()
+    //     .then(result =>{
+    //         console.log(result)
+    //         res.status(201).json({
+    //             message : 'Add comment success',
+    //             addComment: {
+    //                 _id : result._id,
+    //                 eventID : result.eventID,
+    //                 detail : result.detail,
+    //                 timestamp : result.timestamp,
+    //                 request: {
+    //                     type : 'GET',
+    //                     url : ''
+    //                 }
+    //             }
+    //         })
+    //     })
+    //     .catch(err =>{
+    //         console.log(err)
+    //         res.status(500).json({
+    //             error : err
+    //         })
+    //     })
 
 }
 exports.deleteComment =(req,res,next)=>{
