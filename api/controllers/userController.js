@@ -114,7 +114,7 @@ exports.login =(req,res,next)=>{
                    } , "Secret_Key" , { expiresIn : "1h"})
                    return res.status(200).json({
                        message : "Auth successfully",
-                       user : user[0].confirmationToken,
+                       confirmationToken : user[0].confirmationToken,
                        token : token,
                         _id : user[0]._id
                     })   
