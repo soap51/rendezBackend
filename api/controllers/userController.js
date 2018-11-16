@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const salt = bcrypt.hashSync("myRendez")
 const UserModel = require('../models/userModel')
 const nodemailer =require("nodemailer")
+
 exports.register = (req,res,next)=>{
     console.log(req.body)
     UserModel
@@ -91,6 +92,7 @@ exports.register = (req,res,next)=>{
             })
         })
     }
+
 exports.login =(req,res,next)=>{
     UserModel
         .find({email : req.body.email})
@@ -128,6 +130,7 @@ exports.login =(req,res,next)=>{
             })
         })
 }
+
 exports.forgot =(req,res,next)=>{
     UserModel
         .find({email : req.body.email})
@@ -182,6 +185,7 @@ exports.forgot =(req,res,next)=>{
         //     })
         // })
 }
+
 exports.verify =(req,res,next)=>{
     UserModel
     .find({_id : req.body._id})
@@ -285,14 +289,29 @@ exports.resend =(req,res,next)=>{
                 })
 }
 
-export.profile = (req, res, next)=>{
+exports.profile = (req, res, next)=>{
     UserModel
-    .find()
-    .select('_id ')
-    .populate()
+    .find({_id : req.params.userID})
     .exec()
-    .then()
+    .then(user =>{
+        res.status(200).json({
+            fullName : user.fullName,
+            email : user.email,
+            sex : user.sex,
+            age : user.age,
+            rate : user.rate,
+            historyJoin : user.historyEvent,
+            historyAct : user.historyAct,
+            currentJoin : user.currentEvent,
+            currentAct : user.currentAct
+
+
+        })
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message : "Incorrect"
+        })
+    })
 
 }
-
-exports.noti = ( req , res , next )=>{}

@@ -33,20 +33,24 @@ const userSchema = mongoose.Schema({
         type : String , 
         required : true
     },
-    notifications : {
-        type : [String],
+    // notifications : {
+    //     type : [String],
        
-    },
+    // },
     sex : {
         type : String,
         required : true
     },
-
+    
     historyComment : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Comment'
     },
-    historyEvent : {
+    historyJoin : {
+        type : [mongoose.Schema.Types.ObjectId],
+        ref : 'Event'
+    },
+    historyAct : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Event'
     },
@@ -54,13 +58,21 @@ const userSchema = mongoose.Schema({
         type : Number ,
         required : true
     },
-    currentEvent : {
+    currentJoin : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Event'
     },
     currentAct : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Event'
+    },
+    age : {
+        type : Number,
+        required : true
+    },
+    rate : {
+        type : Number,
+        require : true
     }
 },{
     timestamp : true

@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const EventModel = require("../models/eventModel")
 const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
+
 exports.getAllEventFeed = (req,res,next)=>{
     EventModel
     .find()
@@ -35,10 +36,11 @@ exports.getAllEventFeed = (req,res,next)=>{
     })
    
 }
+
 exports.createEvent =(req,res,next)=>{
    
     UserModel
-        .find({author : req.body.userID})       //request.header.authorization
+        .find({author : req.body.userID})       
         .exec()
         .then(user=>{
             if(user.length == 0){
@@ -52,9 +54,9 @@ exports.createEvent =(req,res,next)=>{
                     // userID : req.body.userID,
                     eventName : req.body.eventName,
                     author : req.body.author ,
-                    eventDate : req.body.eventDate// new Date(),
-                    startTime : req.body.startTime //new Date(),
-                    endTime  : req.body.endTime //new Date(),
+                    eventDate : req.body.eventDate,// new Date(),
+                    startTime : req.body.startTime, //new Date(),
+                    endTime  : req.body.endTime, //new Date(),
                     place : req.body.place,
                     currentSeat : req.body.currentSeat,
                     totalSeat : req.body.totalSeat,
@@ -85,9 +87,10 @@ exports.createEvent =(req,res,next)=>{
         })
     
 }
+
 exports.joinEvent =(req,res,next)=>{
     UserModel
-    .find({_id : req.body.userID})                      //request.header.authorization
+    .find({_id : req.body.userID})                      
     .exec()
     .then(user=>{
         if(user.length == 0){
@@ -126,7 +129,8 @@ exports.joinEvent =(req,res,next)=>{
 }
 
 exports.getEventDetail =(req,res,next)=>{
-    EventModel.find({_id : req.params.id_event})                    //request.header.authorization
+    EventModel
+        .find({_id : req.params.id_event})                    
         .exec()
         .then(event=>{
             if(event.length == 0){
@@ -154,42 +158,42 @@ exports.getEventDetail =(req,res,next)=>{
         })
 }
 
-exports.deleteEvent = (req,res,next)=>{
-    UserModel
-        .find({_id : req.params.id_author})             //request.header.authorization
-        .exec()
-        .then(user=>{
-            if(user.length == 0 ){
-                return res.status(404).json({
-                    message : "User doesn't found"
-                })
-            }
-            else {
-                EventModel
-                    .find({_id : req.params.id_event})
-                    .exec()
-                    .then(event=>{
-                        if(event.length == 0){
-                            return res.status(404).json({
-                                message : "Event doesn't found"
-                            })
-                        } 
-                        else { 
-                            res.status(200).json({
-                                message : "Delete Event Successfully"
-                            })
-                        }
-                    })
-                    .catch(err=>{
-                        res.statu(500).json({
-                            message : "Internal Server Error"
-                        })
-                    })
-            }
-        })
-        .catch(err=>{
-            res.statu(500).json({
-                message : "Internal Server Error"
-            })
-        })
-}
+// exports.deleteEvent = (req,res,next)=>{
+//     UserModel
+//         .find({_id : req.params.id_author})             //request.header.authorization
+//         .exec()
+//         .then(user=>{
+//             if(user.length == 0 ){
+//                 return res.status(404).json({
+//                     message : "User doesn't found"
+//                 })
+//             }
+//             else {
+//                 EventModel
+//                     .find({_id : req.params.id_event})
+//                     .exec()
+//                     .then(event=>{
+//                         if(event.length == 0){
+//                             return res.status(404).json({
+//                                 message : "Event doesn't found"
+//                             })
+//                         } 
+//                         else { 
+//                             res.status(200).json({
+//                                 message : "Delete Event Successfully"
+//                             })
+//                         }
+//                     })
+//                     .catch(err=>{
+//                         res.statu(500).json({
+//                             message : "Internal Server Error"
+//                         })
+//                     })
+//             }
+//         })
+//         .catch(err=>{
+//             res.statu(500).json({
+//                 message : "Internal Server Error"
+//             })
+//         })
+// }
