@@ -3,7 +3,8 @@ const EventModel = require("../models/eventModel")
 const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
-    EventModel.find()
+    EventModel
+    .find()
     .select('_id eventName place eventDate startTime endTime author detail comment currentSeat totalSeat timestamp')
     .populate()
     .exec()
@@ -37,7 +38,7 @@ exports.getAllEventFeed = (req,res,next)=>{
 exports.createEvent =(req,res,next)=>{
    
     UserModel
-        .find({author : req.body.userID})
+        .find({author : req.body.userID})       //request.header.authorization
         .exec()
         .then(user=>{
             if(user.length == 0){
@@ -51,9 +52,9 @@ exports.createEvent =(req,res,next)=>{
                     // userID : req.body.userID,
                     eventName : req.body.eventName,
                     author : req.body.author ,
-                    eventDate : /*req.body.eventDate*/ new Date(),
-                    startTime : /*req.body.startTime*/ new Date(),
-                    endTime  : /*req.body.endTime*/ new Date(),
+                    eventDate : req.body.eventDate// new Date(),
+                    startTime : req.body.startTime //new Date(),
+                    endTime  : req.body.endTime //new Date(),
                     place : req.body.place,
                     currentSeat : req.body.currentSeat,
                     totalSeat : req.body.totalSeat,
@@ -86,7 +87,7 @@ exports.createEvent =(req,res,next)=>{
 }
 exports.joinEvent =(req,res,next)=>{
     UserModel
-    .find({_id : req.body.userID})
+    .find({_id : req.body.userID})                      //request.header.authorization
     .exec()
     .then(user=>{
         if(user.length == 0){
@@ -125,7 +126,7 @@ exports.joinEvent =(req,res,next)=>{
 }
 
 exports.getEventDetail =(req,res,next)=>{
-    EventModel.find({_id : req.params.id_event})
+    EventModel.find({_id : req.params.id_event})                    //request.header.authorization
         .exec()
         .then(event=>{
             if(event.length == 0){
@@ -155,7 +156,7 @@ exports.getEventDetail =(req,res,next)=>{
 
 exports.deleteEvent = (req,res,next)=>{
     UserModel
-        .find({_id : req.params.id_author})
+        .find({_id : req.params.id_author})             //request.header.authorization
         .exec()
         .then(user=>{
             if(user.length == 0 ){

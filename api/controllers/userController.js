@@ -114,6 +114,7 @@ exports.login =(req,res,next)=>{
                    return res.status(200).json({
                        message : "Auth successfully",
                        token : token,
+                       confirmationToken : user[0].confirmationToken,
                         _id : user[0]._id
                     })   
                }
@@ -134,7 +135,7 @@ exports.forgot =(req,res,next)=>{
         .then(user=>{
             if(user.length < 1){
                  res.status(401).json({
-                    message : "Email doesn't found"
+                    message : "Email not found"
                 })
            }else{
             
@@ -175,11 +176,11 @@ exports.forgot =(req,res,next)=>{
            }
            
         })
-        .catch(err=>{
-            res.status(500).json({
-                message : "Something went wrong"
-            })
-        })
+        // .catch(err=>{
+        //     res.status(500).json({
+        //         message : "Something went wrong"
+        //     })
+        // })
 }
 exports.verify =(req,res,next)=>{
     UserModel
@@ -188,7 +189,7 @@ exports.verify =(req,res,next)=>{
     .then(user=>{
         if(user.length < 1){
             return res.status(404).json({
-                message : "User doesn't found"
+                message : "User not found"
             })
         }
             // else{
@@ -282,6 +283,16 @@ exports.resend =(req,res,next)=>{
                         message : "Something went wrong"
                     })
                 })
+}
+
+export.profile = (req, res, next)=>{
+    UserModel
+    .find()
+    .select('_id ')
+    .populate()
+    .exec()
+    .then()
+
 }
 
 exports.noti = ( req , res , next )=>{}
