@@ -153,9 +153,9 @@ exports.forgot =(req,res,next)=>{
                         let mailOptions = {
                             from: '"Rendez Contect" <rendezvarify@gmail.com>', // sender address
                             to: req.body.email, // list of receivers
-                            subject: 'Foegot Password', // Subject line
+                            subject: 'Forgot Password', // Subject line
                             //text: 'Hello world?', // plain text body
-                            html: '<p>'+req.body.password+'</p>' // html body
+                            html: '<p>'+user[0].password+'</p>' // html body
                         };
         
                         // send mail with defined transport object
@@ -183,7 +183,7 @@ exports.forgot =(req,res,next)=>{
 }
 exports.verify =(req,res,next)=>{
     UserModel
-    .find({_id : req.body._id})
+    .find({otp : req.body.otp})
     .exec()
     .then(user=>{
         if(user.length < 1){
