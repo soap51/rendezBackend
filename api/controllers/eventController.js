@@ -37,7 +37,7 @@ exports.getAllEventFeed = (req,res,next)=>{
 exports.createEvent =(req,res,next)=>{
    
     UserModel
-        .find({_id : req.body.author})
+        .find({_id : req.body.userID})
         .exec()
         .then(user=>{
             if(user.length == 0){
