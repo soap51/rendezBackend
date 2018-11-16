@@ -33,8 +33,8 @@ const eventSchema = mongoose.Schema({
         type : String
     },
     comment : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : 'Comment'
+        type : [mongoose.Schema.Types.Mixed],
+
     //     ment:
     //         { type: mongoose.Schema.ObjectId , ref : 'Comment'}
         

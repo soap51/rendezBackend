@@ -5,31 +5,17 @@ const Comment = require('../models/commentModel')
 
 
 exports.getAllEventComment = (req,res,next)=>{
-    Comment.find()
-    .select('_id eventID detail timestamp')
+    
+    Event.findById(req.body.eventID)
     .exec()
-    .then(docs => {
-        const response = {
-            count : docs.length,
-            event : docs.map(doc => {
-                return{
-                    _id : doc._id,
-                    eventID : doc.eventID,
-                    detail : doc.detail,
-                    timestamp : doc.timestamp,
-                    request : {
-                        type : 'GET',
-                        url : ' '
-                    }
-                }
-            })
-        }
-        res.status(200).json(response)
-    })
-    .catch(err =>{
-        console.log(err)
+    .then(result=>{
+        console.log(...result.comment)
+        res.status(200).json({
+           comment : result.comment
+        })
+    }).catch(err=>{
         res.status(500).json({
-            error : err
+            message : "Can not get all event"
         })
     })
 }
@@ -41,14 +27,25 @@ exports.addcomment =(req,res,next)=>{
         // timestamp : req.body.timestamp
     })
     console.log(comment)
-    Event.findByIdAndUpdate( req.body.eventID )
+    Event.findById( req.body.eventID)
         .exec()
         .then(event=>{
-            console.log(event)
-            res.status(200).json({
-                message : "Add Comment Successfully",
-                event : event
-            })
+           
+            Event.updateOne({_id : req.body.eventID} , {...event._doc , comment : [...event._doc.comment , comment]})
+                .exec()
+                .then(result=>{
+                    res.status(200).json({
+                        message : "Add Comment Successfully",
+                        result : result
+                    })
+                    
+                })
+                .catch(err=>
+                    res.status(500).json({
+                        message : "Update Error",
+                        err : err
+                    })    
+                )
             
                 
             

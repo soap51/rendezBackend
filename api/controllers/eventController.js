@@ -129,7 +129,8 @@ exports.joinEvent =(req,res,next)=>{
 }
 
 exports.getEventDetail =(req,res,next)=>{
-    EventModel.find({_id : req.params.id_event})
+    console.log(req.params.eventID)
+    EventModel.findById(req.params.eventID)
         .exec()
         .then(event=>{
             if(event.length == 0){
@@ -137,15 +138,11 @@ exports.getEventDetail =(req,res,next)=>{
                     message : "EventDetail dosen't found"
                 })
             }
-            else{res.status(200).json({
-                    eventName : event.eventName,
-                    eventDate : event.eventDate,
-                    startTime : event.startTime ,
-                    endTime  : event.endTime,
-                    place : event.place,
-                    currentSeat : event.currentSeat,
-                    totalSeat : event.totalSeat,
-                    detail : event.detail 
+           
+            else{
+                console.log(event)
+                res.status(200).json({
+                    ...event._doc
             })
             }
         })
