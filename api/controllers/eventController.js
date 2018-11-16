@@ -71,7 +71,8 @@ exports.createEvent =(req,res,next)=>{
                     .catch(err=>{
                         console.log(err)
                         res.status(500).json({
-                            message : "Create Event Error "
+                            message : "Create Event Error ",
+                            err : err
                         })
                     })
             }
