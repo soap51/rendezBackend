@@ -3,7 +3,7 @@ const EventModel = require("../models/eventModel")
 const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
-    EventModel.find({eventID : req.body._id})
+    EventModel.find()
     .select('_id eventName place eventDate startTime endTime author detail comment currentSeat totalSeat timestamp')
     .populate('author')
     .exec()
@@ -13,7 +13,7 @@ exports.getAllEventFeed = (req,res,next)=>{
             event : docs.map(doc =>{
                 return{
                     _id : doc._id,
-                    comment : doc.text,
+                    comment : doc.comment,
                     detail : doc.detail,
                     eventName : doc.eventName,
                     place : doc.place,
@@ -53,7 +53,7 @@ exports.createEvent =(req,res,next)=>{
                     author : req.body.author ,
                     eventDate : req.body.eventDate ,
                     startTime : req.body.startTime,
-                    endTime  : req.body.endTime ,
+                    endTime  : req.body.endTime  ,
                     place : req.body.place,
                     currentSeat : req.body.currentSeat,
                     totalSeat : req.body.totalSeat,
@@ -71,7 +71,7 @@ exports.createEvent =(req,res,next)=>{
                     .catch(err=>{
                         console.log(err)
                         res.status(500).json({
-                            message : "Internal Server Error "
+                            message : "Create Event Error "
                         })
                     })
             }
