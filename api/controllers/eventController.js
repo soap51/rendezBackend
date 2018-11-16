@@ -5,7 +5,7 @@ const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
     EventModel.find()
     .select('_id eventName place eventDate startTime endTime author detail comment currentSeat totalSeat timestamp')
-    .populate('author')
+    .populate('Comment' , 'detail')
     .exec()
     .then(docs =>{
         res.status(200).json({
@@ -16,6 +16,8 @@ exports.getAllEventFeed = (req,res,next)=>{
                     comment : doc.comment,
                     detail : doc.detail,
                     eventName : doc.eventName,
+                    startTime : doc.startTime,
+                    endTime : doc.endTime,
                     place : doc.place,
                     eventDate : doc.eventDate,
                     author : doc.author,

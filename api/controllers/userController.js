@@ -233,11 +233,13 @@ exports.verify =(req,res,next)=>{
 // }
 
 exports.resend =(req,res,next)=>{
+    
     UserModel
     .find({email : req.body.email})
     .exec()
     .then(user=>{
-        if(user.length < 0){
+       
+        if(user.length < 1){
             return res.status(404).json({
                 message : "Email Not Found"
             })
@@ -260,7 +262,7 @@ exports.resend =(req,res,next)=>{
                     to: req.body.email, // list of receivers
                     subject: 'Verify Your Email For Rendez', // Subject line
                     // text: 'Hello world?', // plain text body
-                    html: '<p>'+result.otp+'</p>' // html body
+                    html: '<p>'+user[0].otp+'</p>' // html body
                 };
 
                 // send mail with defined transport object
