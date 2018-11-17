@@ -235,7 +235,7 @@ exports.verify =(req,res,next)=>{
 exports.resend =(req,res,next)=>{
     
     UserModel
-    .find({email : req.body.email})
+    .find({_id : req.body._id})
     .exec()
     .then(user=>{
        
@@ -259,7 +259,7 @@ exports.resend =(req,res,next)=>{
                 // setup email data with unicode symbols
                 let mailOptions = {
                     from: '"Rendez Contect" <rendezvarify@gmail.com>', // sender address
-                    to: req.body.email, // list of receivers
+                    to: user[0].email, // list of receivers
                     subject: 'Verify Your Email For Rendez', // Subject line
                     // text: 'Hello world?', // plain text body
                     html: '<p>'+user[0].otp+'</p>' // html body
