@@ -288,4 +288,4 @@ exports.resend =(req,res,next)=>{
                 })
 }
 
-exports.noti = ( req , res , next )=>{}
+exports.profile()

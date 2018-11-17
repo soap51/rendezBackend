@@ -21,6 +21,7 @@ exports.getAllEventFeed = (req,res,next)=>{
                     place : doc.place,
                     eventDate : doc.eventDate,
                     author : doc.author,
+                    iconType : doc.iconType,
                     request : {
                         type : 'GET',
                         url : ''

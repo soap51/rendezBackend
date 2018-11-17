@@ -81,48 +81,48 @@ exports.addcomment =(req,res,next)=>{
     //     })
 
 }
-exports.deleteComment =(req,res,next)=>{
-    const id = req.param.commentID
-    Comment.remove({_id : id})
-        .exec()
-        .then(result =>{
-            res.status(200).json({
-                message : 'Comment deleted',
-                request : {
-                    type : 'POST',
-                    url : ' ',
-                    body : {detail : 'String'}
-                }
-            })
-        })
-        .catch(err =>{
-            console.log(err)
-            res.status(500).json({
-                error : err
-            })
-        })
-}
-exports.updateComment =(req,res,next)=>{
-    const id = req.param.commentID
-    const updateOps = {}
-    for(const ops of req.body){
-        updateOps[ops.propName] = opse.value
-    }
-    comment.update({id : id},{$set : updateOps})
-        .exec()
-        .then(result =>{
-            res.status(200).json({
-                message : 'Comment updated',
-                request : {
-                    type : 'GET',
-                    url : ' '
-                }
-            })
-        })
-        .catch(err =>{
-            console.log(err)
-            res.status(500).json({
-                error : err
-            })
-        })
-}
+// exports.deleteComment =(req,res,next)=>{
+//     const id = req.param.commentID
+//     Comment.remove({_id : id})
+//         .exec()
+//         .then(result =>{
+//             res.status(200).json({
+//                 message : 'Comment deleted',
+//                 request : {
+//                     type : 'POST',
+//                     url : ' ',
+//                     body : {detail : 'String'}
+//                 }
+//             })
+//         })
+//         .catch(err =>{
+//             console.log(err)
+//             res.status(500).json({
+//                 error : err
+//             })
+//         })
+// }
+// exports.updateComment =(req,res,next)=>{
+//     const id = req.param.commentID
+//     const updateOps = {}
+//     for(const ops of req.body){
+//         updateOps[ops.propName] = opse.value
+//     }
+//     comment.update({id : id},{$set : updateOps})
+//         .exec()
+//         .then(result =>{
+//             res.status(200).json({
+//                 message : 'Comment updated',
+//                 request : {
+//                     type : 'GET',
+//                     url : ' '
+//                 }
+//             })
+//         })
+//         .catch(err =>{
+//             console.log(err)
+//             res.status(500).json({
+//                 error : err
+//             })
+//         })
+// }
