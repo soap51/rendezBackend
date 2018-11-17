@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const salt = bcrypt.hashSync("myRendez")
 const UserModel = require('../models/userModel')
 const nodemailer =require("nodemailer")
+
 exports.register = (req,res,next)=>{
     console.log(req.body)
     UserModel
@@ -99,13 +100,13 @@ exports.login =(req,res,next)=>{
         .then(user=>{
            if(user.length < 1){
                 return res.status(401).json({
-                    message : "Auth failed"        
+                    message : "User not found"        
                 })
            }
            bcrypt.compare(req.body.password , user[0].password , (err , result)=>{
                if(err){
                    return res.status(401).json({
-                       message : "Auth failed"
+                       message : "Wrong Password"
                    })
                }if(result){
                    const token = jwt.sign({
@@ -235,7 +236,7 @@ exports.verify =(req,res,next)=>{
 exports.resend =(req,res,next)=>{
     
     UserModel
-    .find({_id : req.body._id})
+    .find({email : req.body.email})
     .exec()
     .then(user=>{
        
@@ -259,7 +260,7 @@ exports.resend =(req,res,next)=>{
                 // setup email data with unicode symbols
                 let mailOptions = {
                     from: '"Rendez Contect" <rendezvarify@gmail.com>', // sender address
-                    to: user[0].email, // list of receivers
+                    to: req.body.email, // list of receivers
                     subject: 'Verify Your Email For Rendez', // Subject line
                     // text: 'Hello world?', // plain text body
                     html: '<p>'+user[0].otp+'</p>' // html body
