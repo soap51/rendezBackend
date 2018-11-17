@@ -119,7 +119,8 @@ exports.joinEvent =(req,res,next)=>{
                         }
                         else{
                             let seat = event.current + 1
-                            EventModel.updateOne(req.body.eventID,{$set:{currentSeat:seat}})
+                            EventModel.findByIdAndUpdate(req.body.eventID,{$set:{currentSeat:seat}})
+                            EventModel.updateOne(req.body.eventID,{$set:{userJoin:req.body._id}})
                         }
                     }
                 })

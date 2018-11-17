@@ -49,6 +49,9 @@ const eventSchema = mongoose.Schema({
         // type : [mongoose.Schema.Types.ObjectId],
         // ref : 'Seat'
     },
+    userJoin :{
+        type : String 
+    },
     iconType : {
         type : Number ,
         required : true
