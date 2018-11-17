@@ -20,7 +20,8 @@ exports.register = (req,res,next)=>{
                  
                     if(err){
                         return res.status(500).json({
-                            message : "Something went wrong"
+                            message : "Something went wrong",
+                            error : err
                         })
                     }else{
                         let pass = Math.floor(1000 + Math.random() * 9000);
@@ -89,7 +90,8 @@ exports.register = (req,res,next)=>{
         .catch(err=>{
             
             res.status(500).json({
-                message : "Something went wrong"
+                message : "Something went wrong",
+                error : err
             })
         })
     }
