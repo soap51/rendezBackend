@@ -225,7 +225,7 @@ exports.joinEvent =(req,res,next)=>{
 
 exports.getEventDetail =(req,res,next)=>{
     console.log(req.params.eventID)
-    EventModel.findById(req.params.eventID)
+    EventModel.findById(req.params.eventID).populate("author" , "fullName")
         .exec()
         .then(event=>{
             if(event.length == 0){
