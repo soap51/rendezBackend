@@ -50,7 +50,7 @@ const eventSchema = mongoose.Schema({
         // ref : 'Seat'
     },
     userJoin :{
-        type : String 
+        type : [mongoose.Schema.Types.Mixed] 
     },
     iconType : {
         type : Number ,

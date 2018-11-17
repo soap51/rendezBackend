@@ -45,24 +45,15 @@ const userSchema = mongoose.Schema({
         type : Number ,
         required : true
     },
-
-    historyComment : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : 'Comment'
-    },
-    historyEvent : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : 'Event'
-    },
     otp : {
         type : Number ,
         required : true
     },
-    currentEvent : {
+    myJoinEvent : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Event'
     },
-    currentAct : {
+    myCreateEvent : {
         type : [mongoose.Schema.Types.ObjectId],
         ref : 'Event'
     }

@@ -4,7 +4,7 @@ const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
     EventModel.find()
-    .select('_id eventName fullName iconType place eventDate startTime endTime detail comment currentSeat totalSeat timestamp')
+    .select('_id eventName fullName iconType userJoin place eventDate startTime endTime detail comment currentSeat totalSeat timestamp')
     .populate('author' , 'fullName')
     .exec()
     .then(docs =>{
@@ -24,6 +24,7 @@ exports.getAllEventFeed = (req,res,next)=>{
                     author : doc.author,
                     iconType : doc.iconType,
                     currentSeat : doc.currentSeat,
+                    userJoin : doc.userJoin,
                     totalSeat : doc.totalSeat,
                     request : {
                         type : 'GET',
@@ -69,10 +70,27 @@ exports.createEvent =(req,res,next)=>{
                 Event
                     .save()
                     .then(result => {
-                        res.status(201).json({
-                            message : "Create Event Successfully",
-                            result : result
-                        })
+                        console.log(result)
+                        UserModel
+                            .updateOne({_id :req.body.userID} , {...user[0]._doc , myCreateEvent : [...user[0]._doc.myCreateEvent , result._id]})
+                            .exec()
+                            .then(saveUser=>{
+                                res.status(200).json({
+                                    message : "Create Event Successfully",
+                                    event : result,
+                                    user : saveUser
+
+                                })
+                            }).catch(err=>{
+                                res.status(500).json({
+                                    message : "Update Error",
+                                    error : err
+                                })
+                            })
+                        // res.status(201).json({
+                        //     message : "Create Event Successfully",
+                        //     result : result
+                        // })
                     })
                     .catch(err=>{
                         console.log(err)
@@ -98,14 +116,16 @@ exports.joinEvent =(req,res,next)=>{
     .exec()
     // .populate()
     .then(user=>{
+        console.log(user)
         if(user.length < 1){
              res.status(404).json({
                 message : "User doesn't found"
             })
         }
             else { 
+               
                 EventModel
-                .fine({_id :req.params.eventID})
+                .find({_id :req.params.eventID})
                 .exec()
                 .then(event=>{
                     if(event.length == 0){
@@ -114,34 +134,63 @@ exports.joinEvent =(req,res,next)=>{
                         })
                     }
                     else{
-                        if(event.currentSeat == event.totalSeat){
+                      
+                        if(event[0].currentSeat == event[0].totalSeat){
                             return res.status(200).json({
                                 messsage : "Event Full"
                             })
                         }
                         else{
-                            let seat = event.current + 1
-                            EventModel.findByIdAndUpdate(req.body.eventID,{$set:{currentSeat:seat}})
-                            // EventModel.updateOne({_id : req.body.eventID} , {...event._doc , userJoin : [...event._doc.userJoin , userJoin]})
-                            // .exec()
-                            // .then(result=>{
-                            //     res.status(200).json({
-                            //         message : "Join Successfully",
-                            //         result : result
-                            //     })
+                            let seat = event[0].currentSeat + 1
+                          
+                            if(""+event[0].author._id == ""+user[0]._id){
+                             
+                                return res.status(400).json({
+                                    message : "User is owner event"
+                                })
+                            }
+                            for(let u of event[0].userJoin){
+                              
+                                if(u== user[0]._id){
+                                    return res.status(400).json({
+                                        message : "User has been join"
+                                    })
+                                }
+                            }
+                            EventModel.updateOne({_id : req.params.eventID} ,  {...event[0]._doc , userJoin : [...event[0]._doc.userJoin , req.body.userID] , currentSeat : seat} ).exec()
+                            .then(result=>{
+                              
+                                UserModel.updateOne({_id : req.body.userID} , {...user[0]._doc , myJoinEvent : [...user[0]._doc.myJoinEvent , event[0]._doc._id]})
+                                .exec()
+                                .then(saveUser=>{
+                                    res.status(200).json({
+                                        message : "Join Success",
+                                        event : result,
+                                        user : saveUser
+                                    })
+                                })
+                                .catch(err=>{
+                                    res.status(500).json({
+                                        message : "Update Model Error",
+                                        error : err
+                                    })
+                                })
                                 
-                            // })
-                            // .catch(err=>
-                            //     res.status(500).json({
-                            //         message : "Join Error",
-                            //         err : err
-                            //     })    
-                            // )
+                            })
+                            .catch(err=>{
+                                console.log(err)
+                                res.status(500).json({
+                                    message : "Update Error",
+                                    error : err
+                                })
+                            })
+                           
                         }
                     }
                 })
                 .catch(err=>{
-                    res.status(401).json({
+                    console.log(err)
+                    res.status(500).json({
                         message : "Event out"
                     })
                 })
@@ -167,7 +216,8 @@ exports.joinEvent =(req,res,next)=>{
         }
     })
     .catch(err=>{
-        res.status(401).json({
+       
+        res.status(500).json({
             error : err
         })
     })
@@ -233,7 +283,7 @@ exports.deleteEvent = (req,res,next)=>{
             }
         })
         .catch(err=>{
-            res.statu(500).json({
+            res.status(500).json({
                 message : "Internal Server Error"
             })
         })
