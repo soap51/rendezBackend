@@ -94,32 +94,59 @@ exports.joinEvent =(req,res,next)=>{
     UserModel
     .find({_id : req.body.userID})
     .exec()
+    // .populate()
     .then(user=>{
         if(user.length == 0){
-            return res.status(404).json({
+             res.status(404).json({
                 message : "User doesn't found"
             })
         }
-        else { 
-            const Seat = new seatModel({
-                _id : mongoose.Schema.Types.ObjectId,
-                eventID : req.body.eventID,
-                max : req.body.max
-})
-            Seat
-                .save()
-                .then(result => {
-                    res.status(201).json({
-                        message : "Join Event",
-                        result : result
-                    })
+            else { 
+                EventModel
+                .fine({_id :req.body.eventID})
+                .exec()
+                .then(event=>{
+                    if(event.length == 0){
+                        res.status(404).json({
+                            message : "Event doesn't found"
+                        })
+                    }
+                    else{
+                        if(event.currentSeat == event.totalSeat){
+                            return res.status(200).json({
+                                messsage : "Event Full"
+                            })
+                        }
+                        else{
+                            let seat = event.current + 1
+                            EventModel.updateOne(req.body.eventID,{$set:{currentSeat:seat}})
+                        }
+                    }
                 })
                 .catch(err=>{
-                    console.log(err)
-                    res.status(500).json({
-                        message : "Internal Server Error"
+                    res.status(401).json({
+                        message : "Event out"
                     })
                 })
+//             const Seat = new seatModel({
+//                 _id : mongoose.Schema.Types.ObjectId,
+//                 eventID : req.body.eventID,
+//                 max : req.body.max
+// })
+//             Seat
+//                 .save()
+//                 .then(result => {
+//                     res.status(201).json({
+//                         message : "Join Event",
+//                         result : result
+//                     })
+//                 })
+//                 .catch(err=>{
+//                     console.log(err)
+//                     res.status(500).json({
+//                         message : "Internal Server Error"
+//                     })
+//                 })
         }
     })
     .catch(err=>{
@@ -127,7 +154,6 @@ exports.joinEvent =(req,res,next)=>{
             error : err
         })
     })
-    
 }
 
 exports.getEventDetail =(req,res,next)=>{
