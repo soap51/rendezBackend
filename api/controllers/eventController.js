@@ -23,6 +23,8 @@ exports.getAllEventFeed = (req,res,next)=>{
                     eventDate : doc.eventDate,
                     author : doc.author,
                     iconType : doc.iconType,
+                    currentSeat : doc.currentSeat,
+                    totalSeat : doc.totalSeat,
                     request : {
                         type : 'GET',
                         url : ''
@@ -96,14 +98,14 @@ exports.joinEvent =(req,res,next)=>{
     .exec()
     // .populate()
     .then(user=>{
-        if(user.length == 0){
+        if(user.length < 1){
              res.status(404).json({
                 message : "User doesn't found"
             })
         }
             else { 
                 EventModel
-                .fine({_id :req.body.eventID})
+                .fine({_id :req.params.eventID})
                 .exec()
                 .then(event=>{
                     if(event.length == 0){
@@ -120,7 +122,21 @@ exports.joinEvent =(req,res,next)=>{
                         else{
                             let seat = event.current + 1
                             EventModel.findByIdAndUpdate(req.body.eventID,{$set:{currentSeat:seat}})
-                            EventModel.updateOne(req.body.eventID,{$set:{userJoin:req.body._id}})
+                            // EventModel.updateOne({_id : req.body.eventID} , {...event._doc , userJoin : [...event._doc.userJoin , userJoin]})
+                            // .exec()
+                            // .then(result=>{
+                            //     res.status(200).json({
+                            //         message : "Join Successfully",
+                            //         result : result
+                            //     })
+                                
+                            // })
+                            // .catch(err=>
+                            //     res.status(500).json({
+                            //         message : "Join Error",
+                            //         err : err
+                            //     })    
+                            // )
                         }
                     }
                 })

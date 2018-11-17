@@ -210,7 +210,7 @@ exports.verify =(req,res,next)=>{
                           .then(result=>{
                             res.status(201).json({
                                 message : "Verify Success",
-                                confirmationToken : result.confirmationToken
+                                confirmationToken : true
                             })
                           })
                           .catch(err=>{
