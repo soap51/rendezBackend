@@ -4,10 +4,11 @@ const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
     EventModel.find()
-    .select('_id eventName place eventDate startTime endTime author detail comment currentSeat totalSeat timestamp')
-    .populate('Comment' , 'detail')
+    .select('_id eventName fullName iconType place eventDate startTime endTime detail comment currentSeat totalSeat timestamp')
+    .populate('author' , 'fullName')
     .exec()
     .then(docs =>{
+        
         res.status(200).json({
             count : docs.length,
             event : docs.map(doc =>{
