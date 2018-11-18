@@ -7,6 +7,6 @@ router.post("/login" , userController.login)
 router.post('/forgot' , userController.forgot)
 router.post('/verify' , userController.verify)
 router.post('/resend' , userController.resend)
-router.get('/profile', userController.profile)
+router.post('/', userController.profile)
 
 module.exports = router

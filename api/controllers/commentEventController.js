@@ -5,8 +5,8 @@ const Comment = require('../models/commentModel')
 
 
 exports.getAllEventComment = (req,res,next)=>{
-    
-    Event.findById(req.body.eventID)
+   
+    Event.findById(req.body.eventID )
     .exec()
     .then(result=>{
         console.log(...result.comment)
@@ -15,7 +15,8 @@ exports.getAllEventComment = (req,res,next)=>{
         })
     }).catch(err=>{
         res.status(500).json({
-            message : "Can not get all event"
+            message : "Can not get all event",
+            error : err
         })
     })
 }

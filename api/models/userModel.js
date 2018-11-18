@@ -49,14 +49,10 @@ const userSchema = mongoose.Schema({
         type : Number ,
         required : true
     },
-    myJoinEvent : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : 'Event'
-    },
-    myCreateEvent : {
-        type : [mongoose.Schema.Types.ObjectId],
-        ref : 'Event'
-    }
+    myJoinEvent :  [{type : mongoose.Schema.Types.ObjectId  ,    ref : 'Event'}],
+    myCreateEvent :  [{type : mongoose.Schema.Types.ObjectId  ,    ref : 'Event'}],
+    
+  
 },{
     timestamp : true
 })
