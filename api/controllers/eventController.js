@@ -157,12 +157,14 @@ exports.joinEvent =(req,res,next)=>{
                                 .then(saveUser=>{
                                     UserModel.findById(req.body.userID).exec()
                                     .then(user=>{
+                                    
                                         res.status(200).json({
                                             message : "Join Success",
-                                            ...user[0]._doc
+                                            user : user
                                         })
                                     })
                                     .catch(err=>{
+                                        console.log(err)
                                         res.status(500).json({
                                             message : "Error find user"
                                         })
@@ -227,10 +229,21 @@ exports.unjoinEvent =(req,res,next)=>{
     .then(user=>{
         EventModel.findByIdAndUpdate(req.body.eventID , {$inc : {currentSeat : -1}}).exec()
         .then(saveEvent=>{
-            res.status(200).json({
-                message : "Decrement event Success",
-                saveEvent 
+            UserModel.findById(req.body.userID)
+            .exec()
+            .then(saveUser=>{
+                res.status(200).json({
+                    message :"Unjoin Success",
+                    saveUser
+                })
             })
+            .catch(err=>{
+                res.status(500).json({
+                    message : "Unjoin error",
+                    err
+                })
+            })
+            
         }).catch(err=>{
             res.status(500).json({
                 message : "Decrement event error",
