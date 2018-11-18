@@ -119,6 +119,8 @@ exports.login =(req,res,next)=>{
                    return res.status(200).json({
                        message : "Auth successfully",
                        confirmationToken : user[0].confirmationToken,
+                       myJoinEvent : user[0].myJoinEvent,
+                       myCreateEvent : user[0].myCreateEvent,
                        token : token,
                         _id : user[0]._id
                     })   
