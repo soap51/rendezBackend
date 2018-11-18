@@ -8,6 +8,8 @@ router.post("/" , eventController.createEvent) // create event
 router.patch('/:eventID' , eventController.joinEvent) // join event
 router.get("/:eventID" , eventController.getEventDetail) // get event detail
 router.use('/:eventID' , commentEventRoute)
+router.post('/unjoin' , eventController.unjoinEvent)
+
 
 
 module.exports = router

@@ -116,7 +116,7 @@ exports.joinEvent =(req,res,next)=>{
     .exec()
     // .populate()
     .then(user=>{
-      
+        
         if(user.length < 1){
              res.status(404).json({
                 message : "User doesn't found"
@@ -148,18 +148,14 @@ exports.joinEvent =(req,res,next)=>{
                                 return res.status(400).json({
                                     message : "User is owner event"
                                 })
-                            }
-                            
-                        
-                      
-                            
+                            }                          
                             EventModel.updateOne({_id : req.params.eventID} ,  {...event[0]._doc , userJoin : [...event[0]._doc.userJoin , req.body.userID] , currentSeat : seat} ).exec()
                             .then(result=>{
                               
                                 UserModel.updateOne({_id : req.body.userID} , {...user[0]._doc , myJoinEvent : [...user[0]._doc.myJoinEvent , event[0]._doc._id]})
                                 .exec()
                                 .then(saveUser=>{
-                                    res.status(200).json({
+                                    return res.status(200).json({
                                         message : "Join Success",
                                         event : result,
                                         user : saveUser
@@ -215,6 +211,31 @@ exports.joinEvent =(req,res,next)=>{
        
         res.status(500).json({
             error : err
+        })
+    })
+}
+
+exports.unjoinEvent =(req,res,next)=>{
+    UserModel.findByIdAndUpdate(req.body.userID , {$pull : {myJoinEvent : {$in : [req.body.eventID]}}} ).exec()
+    .then(user=>{
+        EventModel.findByIdAndUpdate(req.body.eventID , {$inc : {currentSeat : -1}}).exec()
+        .then(saveEvent=>{
+            res.status(200).json({
+                message : "Decrement event Success",
+                saveEvent 
+            })
+        }).catch(err=>{
+            res.status(500).json({
+                message : "Decrement event error",
+                err
+            })
+        })
+        
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message : "Error find user",
+            err
         })
     })
 }
