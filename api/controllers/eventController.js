@@ -159,7 +159,7 @@ exports.joinEvent =(req,res,next)=>{
                                     .then(user=>{
                                         res.status(200).json({
                                             message : "Join Success",
-                                            user
+                                            ...user[0]._doc
                                         })
                                     })
                                     .catch(err=>{
@@ -275,7 +275,7 @@ exports.getEventDetail =(req,res,next)=>{
 
 exports.deleteEvent = (req,res,next)=>{
     UserModel
-        .find({_id : req.params.id_author})
+        .find({_id : req.body.userID})
         .exec()
         .then(user=>{
             if(user.length == 0 ){
@@ -285,7 +285,7 @@ exports.deleteEvent = (req,res,next)=>{
             }
             else {
                 EventModel
-                    .find({_id : req.params.id_event})
+                    .find({_id : req.params.eventID})
                     .exec()
                     .then(event=>{
                         if(event.length == 0){
@@ -294,6 +294,7 @@ exports.deleteEvent = (req,res,next)=>{
                             })
                         } 
                         else { 
+                            EventModel.findOneAndDelete({_id : req.body.eventID})
                             res.status(200).json({
                                 message : "Delete Event Successfully"
                             })
