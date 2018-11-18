@@ -116,7 +116,7 @@ exports.joinEvent =(req,res,next)=>{
     .exec()
     // .populate()
     .then(user=>{
-        console.log(user)
+      
         if(user.length < 1){
              res.status(404).json({
                 message : "User doesn't found"
@@ -142,21 +142,17 @@ exports.joinEvent =(req,res,next)=>{
                         }
                         else{
                             let seat = event[0].currentSeat + 1
-                          
+                            let findEvent = false
                             if(""+event[0].author._id == ""+user[0]._id){
                              
                                 return res.status(400).json({
                                     message : "User is owner event"
                                 })
                             }
-                            for(let u of event[0].userJoin){
-                              
-                                if(u== user[0]._id){
-                                    return res.status(400).json({
-                                        message : "User has been join"
-                                    })
-                                }
-                            }
+                            
+                        
+                      
+                            
                             EventModel.updateOne({_id : req.params.eventID} ,  {...event[0]._doc , userJoin : [...event[0]._doc.userJoin , req.body.userID] , currentSeat : seat} ).exec()
                             .then(result=>{
                               
