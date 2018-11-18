@@ -155,10 +155,17 @@ exports.joinEvent =(req,res,next)=>{
                                 UserModel.updateOne({_id : req.body.userID} , {...user[0]._doc , myJoinEvent : [...user[0]._doc.myJoinEvent , event[0]._doc._id]})
                                 .exec()
                                 .then(saveUser=>{
-                                    return res.status(200).json({
-                                        message : "Join Success",
-                                        event : result,
-                                        user : saveUser
+                                    UserModel.findById(req.body.userID).exec()
+                                    .then(user=>{
+                                        res.status(200).json({
+                                            message : "Join Success",
+                                            user
+                                        })
+                                    })
+                                    .catch(err=>{
+                                        res.status(500).json({
+                                            message : "Error find user"
+                                        })
                                     })
                                 })
                                 .catch(err=>{
