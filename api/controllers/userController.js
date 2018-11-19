@@ -122,6 +122,7 @@ exports.login =(req,res,next)=>{
                        myJoinEvent : user[0].myJoinEvent,
                        myCreateEvent : user[0].myCreateEvent,
                        token : token,
+                       fullName : user[0].fullName,
                         _id : user[0]._id
                     })   
                }
