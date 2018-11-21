@@ -6,12 +6,16 @@ const Comment = require('../models/commentModel')
 
 exports.getAllEventComment = (req,res,next)=>{
    
-    Event.findById(req.body.eventID )
+    Event.findById(req.body.eventID ).populate('author' , 'fullName')
     .exec()
     .then(result=>{
-        console.log(...result.comment)
+        console.log("test ",result)
         res.status(200).json({
-           comment : result.comment
+           comment : result.comment,
+           fullName : result.fullName,
+           eventName : result.eventName
+           
+           
         })
     }).catch(err=>{
         res.status(500).json({
