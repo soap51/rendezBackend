@@ -13,7 +13,8 @@ exports.getAllEventComment = (req,res,next)=>{
         res.status(200).json({
            comment : result.comment,
            fullName : result.fullName,
-           eventName : result.eventName
+           eventName : result.eventName,
+           iconType : result.iconType
            
            
         })
