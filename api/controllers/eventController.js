@@ -4,6 +4,39 @@ const Comment = require("../models/commentModel")
 const UserModel =require('../models/userModel')
 exports.getAllEventFeed = (req,res,next)=>{
     EventModel.find()
+    .exec()
+    .then(doc=>{
+        let date = new Date()
+        let time = new Date()
+        let day = (new Date()).getDate()
+        let currentYear = (new Date()).getFullYear()
+        let currentHour = (new Date()).getHours()
+        let currentMinute = (new Date()).getMinutes()
+        let currentMouth = (new Date()).getMonth()
+        for(let i of doc){console.log("for")
+        // let time = (new Date()).getHours()
+        const yearEndtime = new Date(i.eventDate).getFullYear()
+        const mouthEndtime = new Date(i.eventDate).getMonth()
+        const hourEndtime = new Date(i.endTime).getHours()
+        const minuteEndtime = new Date(i.endTime).getMinutes()
+        const eventDate = new Date(i.eventDate).getDate()
+        // console.log(endTime , " " , eventDate)
+        // if(currentMinute >= minuteEndtime){console.log("min")
+        //     if(currentHour >= hourEndtime){console.log("hour")
+      
+            if(day > eventDate + 3){
+                console.log(day ," ",eventDate + 3)
+           
+            EventModel.deleteOne({_id:i._id})
+            .exec()
+            // }
+            // }
+          
+        }
+        }
+        // }
+    })
+    EventModel.find()
     .select('_id eventName fullName iconType userJoin place eventDate startTime endTime detail comment currentSeat totalSeat timestamp')
     .populate('author' , 'fullName')
     .exec()
@@ -37,6 +70,11 @@ exports.getAllEventFeed = (req,res,next)=>{
     .catch(err =>{
         res.status(500).json({
             error : err
+        })
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message : "Server Error"
         })
     })
    
@@ -287,16 +325,16 @@ exports.getEventDetail =(req,res,next)=>{
 }
 
 exports.deleteEvent = (req,res,next)=>{
-    UserModel
-        .find({_id : req.body.userID})
-        .exec()
-        .then(user=>{
-            if(user.length == 0 ){
-                return res.status(404).json({
-                    message : "User doesn't found"
-                })
-            }
-            else {
+    // UserModel
+    //     .find({_id : req.body.userID})
+    //     .exec()
+    //     .then(user=>{
+    //         if(user.length == 0 ){
+    //             return res.status(404).json({
+    //                 message : "User doesn't found"
+    //             })
+    //         }
+    //         else {
                 EventModel
                     .find({_id : req.params.eventID})
                     .exec()
@@ -306,8 +344,9 @@ exports.deleteEvent = (req,res,next)=>{
                                 message : "Event doesn't found"
                             })
                         } 
-                        else { 
-                            EventModel.findOneAndDelete({_id : req.body.eventID})
+                        else {
+                            EventModel.deleteOne({_id : req.params.eventID})
+                            .exec()
                             res.status(200).json({
                                 message : "Delete Event Successfully"
                             })
@@ -319,10 +358,10 @@ exports.deleteEvent = (req,res,next)=>{
                         })
                     })
             }
-        })
-        .catch(err=>{
-            res.status(500).json({
-                message : "Internal Server Error"
-            })
-        })
-}
+//         })
+//         .catch(err=>{
+//             res.status(500).json({
+//                 message : "Internal Server Error"
+//             })
+//         })
+// }

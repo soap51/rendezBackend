@@ -10,7 +10,7 @@ router.get("/:eventID" , eventController.getEventDetail) // get event detail
 router.use('/:eventID' , commentEventRoute)
 router.post('/unjoin' , eventController.unjoinEvent)
 
-// router.delete("/:eventID",eventController.deleteEvent)
+router.delete("/:eventID",eventController.deleteEvent)
 
 
 
