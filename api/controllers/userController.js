@@ -298,7 +298,7 @@ exports.resend =(req,res,next)=>{
 exports.profile = (req, res, next)=>{
     UserModel
         .findById(req.body.userId)
-        .select("fullName age sex " + (  req.body.typeEvent == 1 ? " myCreateEvent" : " myJoinEvent") )
+        .select("fullName age sex email " + (  req.body.typeEvent == 1 ? " myCreateEvent" : " myJoinEvent") )
         .populate( (  req.body.typeEvent == 1 ? " myCreateEvent" : " myJoinEvent") )
         .exec()
         .then(result=>{
